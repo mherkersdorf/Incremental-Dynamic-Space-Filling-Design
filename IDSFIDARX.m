@@ -19,7 +19,9 @@ arguments
     lambda (1,:) double                                                      % Value of the hyperparameter lambda for each input.
     M (1,:) double = ceil(N./(2*dim*T/Ts))                                   % Number of visitable amplitude levels.
     amplitudeConstraints (2,:) double = [0; 1]*ones(1,dim)                   % Minimum (1st row) and maximum (2nd row) amplitude value vor each input.
-    velocityConstraints (2,:) double = [-1; 1]*ones(1,dim)                   % Constraints on the rate of change for each input during decrease (1st row) and increase (2nd row).
+    velocityConstraints (2,:) double = [-(amplitudeConstraints(2,:) - ...
+        amplitudeConstraints(1,:)); (amplitudeConstraints(2,:) - ...
+        amplitudeConstraints(1,:))]                                          % Constraints on the rate of change for each input during decrease (1st row) and increase (2nd row). By default no constraints.
     additionalConstraints (1,:) string = 'no'                                % Further user-defined constraints; e.g., prohibit certain regions in the (proxy) regressr space, ban on combinations of amplitude levels ...
     existingData (:,:) double = amplitudeConstraints(1,:)                    % Implementation of existing data. If no existing data is on hand, point (0, 0, 0 ...) (in proxy regressor space) is employed to start the optimization.
     Lmax (1,:) double = ceil(dim*4.*T/Ts)                                    % Maximum sequence length for each input.
