@@ -6,9 +6,9 @@ function [u, uProxy, yProxy, levels, visitsLevels] = IDSFIDARX(N, dim, T, Ts, la
 % spectrum by adjusting the hyperparameter lambda. Here, the proxy is established
 % using a first-order ARX model.
 %
-% Author / Copyright: Max Herkersdorf
+% Author / Copyright: Oliver Nelles and Max Herkersdorf
 %
-% E-Mail: Max.Herkersdorf@uni-siegen.de
+% E-Mail: Max.Herkersdorf@uni-siegen.de     Oliver.Nelles@uni-siegen.de
 %
 % Date: 2024/22/01
 arguments
