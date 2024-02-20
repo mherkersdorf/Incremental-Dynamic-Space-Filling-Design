@@ -10,12 +10,12 @@ T =  [5, 5];
 Ts = 1;
 lambda = [0.5, 0.5];
 %
-% % Signal Generation
+%%% Signal Generation
 [u, uProxy, yProxy, levels, visitsLevels] = IDSFIDARX(N, dim, T, Ts, lambda);
 
 %% Execution with Advanced Settings
 %
-% N = 300;
+% N = 100;
 % dim = 2;
 % T =  [5, 5];
 % Ts = 1;
@@ -27,8 +27,8 @@ lambda = [0.5, 0.5];
 % existingData = [ones(5,1)*5, ones(5,1)*-5];
 % Lmax = [30, 40];
 % n = [4, 4];
-
-% Signal Generation
+% 
+% %%% Signal Generation
 % [u, uProxy, yProxy, levels, visitsLevels] = IDSFIDARX(N, dim, T, Ts, lambda, M, amplitudeConstraints, velocityConstraints, additionalConstraints);
 
 

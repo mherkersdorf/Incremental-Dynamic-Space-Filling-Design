@@ -64,6 +64,28 @@ while any(cell2mat(cellfun(@length, uOpt, 'UniformOutput', false)) < N)         
     % Available sequences in this iteration for the current input.
     availableSequencesTemp = repmat(levels{idx}', Lmax(idx),1);
 
+    % Adjust sequences that exceed the velocity constraints.
+    for ll = 1 : size(availableSequencesTemp, 2)
+        kk=1;
+        if availableSequencesTemp(1,ll)>uOpt{idx}(end)
+            while (uOpt{idx}(end) + kk*velocityConstraints(2,idx)<availableSequencesTemp(kk,ll))
+                availableSequencesTemp(kk,ll) = uOpt{idx}(end) + velocityConstraints(2,idx)*kk;
+                kk=kk+1;
+                if kk > Lmax(idx)
+                    break
+                end
+            end
+        elseif availableSequencesTemp(1,ll)<uOpt{idx}(end)
+            while uOpt{idx}(end) + kk*velocityConstraints(1,idx)>availableSequencesTemp(kk,ll)
+                availableSequencesTemp(kk,ll) = uOpt{idx}(end) + velocityConstraints(1,idx)*kk;
+                kk=kk+1;
+                if kk > Lmax(idx)
+                    break
+                end
+            end
+        end
+    end
+
     % Exclude sequences that violate additional, user-defined constraints.
     feasibilityVector = ones(1,M(idx));
     if strcmp(additionalConstraints, 'no')
@@ -105,27 +127,6 @@ while any(cell2mat(cellfun(@length, uOpt, 'UniformOutput', false)) < N)         
         error('No feasible sequences. Consider redefining the additional constraints.')
     end
 
-    % Adjust sequences that exceed the velocity constraints.
-    for ll = 1 : size(availableSequences, 2)
-        kk=1;
-        if availableSequences(1,ll)>uOpt{idx}(end)
-            while (uOpt{idx}(end) + kk*velocityConstraints(2,idx)<availableSequences(kk,ll))
-                availableSequences(kk,ll) = uOpt{idx}(end) + velocityConstraints(2,idx)*kk;
-                kk=kk+1;
-                if kk > Lmax(idx)
-                    break
-                end
-            end
-        elseif availableSequences(1,ll)<uOpt{idx}(end)
-            while uOpt{idx}(end) + kk*velocityConstraints(1,idx)>availableSequences(kk,ll)
-                availableSequences(kk,ll) = uOpt{idx}(end) + velocityConstraints(1,idx)*kk;
-                kk=kk+1;
-                if kk > Lmax(idx)
-                    break
-                end
-            end
-        end
-    end
     % Transform possible new sequences to proxy regressor space.
     tIteration = (Ts:Ts:(numberOptDataPoints(idx)+Lmax(idx))*Ts)';
     uIteration = zeros(numberOptDataPoints(idx)+Lmax(idx),dim);
